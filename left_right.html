@@ -15,7 +15,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.js"></script>
   <script src="bower_components/chance/dist/chance.min.js"></script>
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBI-Gz_lh3-rKXFwlpElD7pInA60U-iK0c&libraries=visualization"></script>
+  <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBI-Gz_lh3-rKXFwlpElD7pInA60U-iK0c&libraries=visualization"></script>
 
   <!-- Import WebGL Layer and Dependencies. -->
   <script src="CanvasLayer.js"></script>
@@ -33,6 +34,7 @@
       margin: 0;
       padding: 0;
     }
+
     #map-canvas {
       position: relative;
     }
@@ -45,11 +47,12 @@
 
   var map_style = [{"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#000000"},{"lightness":40}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#000000"},{"lightness":16}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":17},{"weight":1.2}]},{"featureType":"administrative","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"administrative.country","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"administrative.country","elementType":"geometry","stylers":[{"visibility":"simplified"}]},{"featureType":"administrative.country","elementType":"labels.text","stylers":[{"visibility":"simplified"}]},{"featureType":"administrative.province","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"administrative.locality","elementType":"all","stylers":[{"visibility":"simplified"},{"saturation":"-100"},{"lightness":"30"}]},{"featureType":"administrative.neighborhood","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"administrative.land_parcel","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"simplified"},{"gamma":"0.00"},{"lightness":"74"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"landscape.man_made","elementType":"all","stylers":[{"lightness":"3"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":21}]},{"featureType":"road","elementType":"geometry","stylers":[{"visibility":"simplified"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":16}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":17}]}];
 
-  $( document ).ready(function() {
+  $(document).ready(function () {
+
     function initialize() {
 
       var mapOptions = {
-        center: { lat: 42.3201, lng: -71.0589},
+        center: {lat: 42.3201, lng: -71.0589},
         zoom: 12,
         styles: map_style
       };
@@ -59,7 +62,9 @@
 
       $.getJSON('boston_streetlights.json', function (data) {
 
-        var features = _.reverse(_.sortBy(data.features, [function(o) { return o.geometry.coordinates[0]; }]));
+        var features = _.reverse(_.sortBy(data.features, [function (o) {
+          return o.geometry.coordinates[0];
+        }]));
 
         geoJson = {
           "type": "FeatureCollection",
@@ -73,12 +78,14 @@
         }
         myLayer.start();
 
-        var light_1 = [0.984, 0.949, 0.678];
-        var light_2 = [0.45, 0.949, 1];
-        var light_3 = [0.984, 1, 0.452];
-        var light_4 = [0, 0.259, 0.852];
-        var light_5 = [1, 1, 1];
-        var light_6 = [0, 0, 0];
+        var lighting = [
+          [0.984, 0.949, 0.678],
+          [0.45, 0.949, 1],
+          [0.984, 1, 0.452],
+          [0, 0.259, 0.852],
+          [1, 1, 1],
+          [0, 0, 0]
+        ];
 
         var n = 0;
         var max = geoJson.features.length;
@@ -86,20 +93,20 @@
 
         (function nextBatch() {
           for (var i = 0; i < batch && n < max; ++i, ++n) {
-            myLayer.changePointColor(n, chance.pickone([light_1, light_2, light_3, light_4, light_5, light_6]));
+            myLayer.changePointColor(n, chance.pickone(lighting));
           }
           if (n < max) {
             setTimeout(nextBatch, 100);
           } else {
             setInterval(function () {
               for (var i = 0; i < geoJson.features.length; i++) {
-                myLayer.changePointColor(i, chance.pickone([light_1, light_2, light_3, light_4, light_5, light_6]));
+                myLayer.changePointColor(i, chance.pickone(lighting));
               }
             }, 400);
           }
         })();
 
-        map.addListener('zoom_changed', function() {
+        map.addListener('zoom_changed', function () {
           myLayer.changePointSize(map.getZoom());
         });
 
