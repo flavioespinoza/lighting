@@ -392,7 +392,9 @@ WebGLLayer.prototype.setDefaultPointColor = function (color) {
   this.features_.points.defaultColor = color;
 };
 
-
+/**
+ * Change point size based on zoom level on map
+ * @param {Number} currentZoom */
 WebGLLayer.prototype.changePointSize = function (currentZoom) {
 
   var pointSize = 0;
@@ -408,18 +410,11 @@ WebGLLayer.prototype.changePointSize = function (currentZoom) {
     else if (currentZoom == 17) { pointSize = 12; }
     else if (currentZoom == 18) { pointSize = 24; }
 
-    console.log('currentZoom: ' + currentZoom);
-    console.log('pointSize: ' + pointSize);
-
     this.gl_.vertexAttrib1f(this.pointProgram_.attributes.aPointSize, pointSize);
     this.scheduleUpdate();
   }
 
-
-
 };
-
-
 
 /**
  * Loads a GeoJSON File from a given URL
