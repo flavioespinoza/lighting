@@ -86,7 +86,11 @@
               if (!o) return;
               return o.key === key;
             });
-
+            if (newValue.illumination > 0) {
+              myLayer.changePointColor(_light_index, [0.984, 0.949, 0.678]); //Change color to streetlight yellow
+            } else if (newValue.illumination == 0) {
+              myLayer.changePointColor(_light_index, [0,0,1]); //Change color to black
+            }
             if (_array_index > 0) {
               lightArray.push({
                 key: key,

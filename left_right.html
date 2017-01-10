@@ -28,7 +28,7 @@
   <script src="bower_components/swim/swim-client.js"></script>
 
   <style type="text/css">
-    html, body, #map-canvas {
+    html, body {
       width: 100%;
       height: 100%;
       margin: 0;
@@ -36,12 +36,17 @@
     }
 
     #map-canvas {
-      position: relative;
+      position: relative;      width: 100%;
+      height: 100%;
+
     }
   </style>
 </head>
 <body>
+
 <div id="map-canvas"></div>
+
+<button id="shutOffLights">Shut off some lights</button>
 
 <script type="text/javascript">
 
@@ -91,23 +96,39 @@
         var max = geoJson.features.length;
         var batch = 300;
 
-        (function nextBatch() {
+        function nextBatch() {
           for (var i = 0; i < batch && n < max; ++i, ++n) {
             myLayer.changePointColor(n, chance.pickone(lighting));
           }
           if (n < max) {
             setTimeout(nextBatch, 100);
           } else {
+            twinkleLights(true);
+          }
+        }
+
+        nextBatch(true);
+
+        function twinkleLights(bool) {
+          if (bool) {
             setInterval(function () {
               for (var i = 0; i < geoJson.features.length; i++) {
                 myLayer.changePointColor(i, chance.pickone(lighting));
               }
             }, 400);
+          } else {
+            for (var i = 0; i < geoJson.features.length; i++) {
+              myLayer.changePointColor(i, [0, 0, 0]);
+            }
           }
-        })();
+        }
 
         map.addListener('zoom_changed', function () {
           myLayer.changePointSize(map.getZoom());
+        });
+        
+        $('#shutOffLights').on('click', function () {
+          twinkleLights(false);
         });
 
       });
@@ -117,6 +138,38 @@
     google.maps.event.addDomListener(window, 'load', initialize);
 
   });
+
+</script>
+<script>
+
+var needStop = false;
+
+function create_abcd()
+{
+  var dataString = 'action=create_abcd&type=' + $('#abcd_type').val() + '&count=100';
+  $.ajax({
+    type: "POST",
+    url: "backend.php",
+    data: dataString,
+    success: function(msg){
+      if(needStop) {
+        needStop = false;
+        return;
+      }
+      if(msg != "0")
+      {
+        $("#abcd_output").append('<p>' + msg + '</p>')
+        setTimeout(create_abcd, 2000);
+      }
+      else
+        return false;
+    }
+  });
+}
+
+$('#button').click(function() {
+  needStop = true;
+});
 
 </script>
 </body>

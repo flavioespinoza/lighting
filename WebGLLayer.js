@@ -422,7 +422,6 @@ WebGLLayer.prototype.changePointSize = function (currentZoom) {
  */
 WebGLLayer.prototype.loadGeoJson = function (url) {
 
-
   var loadFunction = this.loadData;
   var layer = this;
 
