@@ -85,8 +85,10 @@
         })
         .didSync(function () {
           console.log('didSync');
-          lightsSynced = true;
-          startLayer();
+          if (!lightSynced) {
+            lightsSynced = true;
+            startLayer();
+          }
         })
         .didUpdate(function (key, newValue) {
           //console.log('light ' + key + ': ' + JSON.stringify(newValue));
