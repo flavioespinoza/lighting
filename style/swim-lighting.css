@@ -1,0 +1,110 @@
+html, body, #map-canvas {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0; }
+
+md-backdrop {
+  height: 100% !important; }
+
+#map-canvas {
+  position: relative; }
+
+#mapOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
+.lighting-welcome-modal {
+  position: relative;
+  width: 348px; }
+  .lighting-welcome-modal .lighting-header-image {
+    width: 348px;
+    height: 152px;
+    background-image: url(../images/boston-skyline.png);
+    background-repeat: no-repeat; }
+
+.lighting-welcome-header {
+  font-family: HelveticaNeue-Bold;
+  text-align: center;
+  font-size: 28.79px;
+  color: #505050; }
+
+.lighting-welcome-subheader {
+  font-family: HelveticaNeue;
+  text-align: center;
+  font-size: 19.25px;
+  color: #9B9B9B; }
+
+.lighting-welcome-text-primary {
+  opacity: 0.5;
+  font-family: HelveticaNeue;
+  font-size: 19.25px;
+  color: #9B9B9B; }
+
+.lighting-welcome-btn {
+  width: 80px;
+  height: 80px;
+  background-image: url(../images/welcome-btn-grey.png);
+  margin: 0 auto;
+  cursor: pointer; }
+  .lighting-welcome-btn:focus {
+    outline: 0; }
+
+.lighting-welcome-btn-active {
+  width: 80px;
+  height: 80px;
+  background-image: url(../images/welcome-btn-yellow.png);
+  margin: 0 auto;
+  cursor: pointer; }
+  .lighting-welcome-btn-active:focus {
+    outline: 0; }
+
+.bg-lighting-yellow-primary {
+  background-color: #E5DC97; }
+
+.bg-lighting-yellow-secondary {
+  background-color: #FBE669; }
+
+.map-header {
+  position: absolute;
+  top: 0;
+  left: 0; }
+
+.lighting-header {
+  opacity: 0.75;
+  font-family: Lato-Regular;
+  font-size: 64px;
+  color: #FCF2A6;
+  float: left; }
+
+.lighting-subheader {
+  opacity: 0.75;
+  font-family: Lato-Light;
+  font-size: 32px;
+  color: #FCF2A6;
+  float: left; }
+
+.lighting-text-primary {
+  font-family: Lato-Light;
+  font-size: 24px;
+  color: #E5DC97;
+  letter-spacing: 0; }
+
+.lighting-text-secondary {
+  font-family: Lato-Light;
+  font-size: 24px;
+  color: #9B9B9B;
+  letter-spacing: 0; }
+
+.lighting-stream {
+  font-family: Lato-Light;
+  font-size: 15px;
+  color: #4A4A4A; }
+
+.foo {
+  color: red; }
+
+/*# sourceMappingURL=swim-lighting.css.map */
