@@ -23,6 +23,9 @@
     "tests"
   ],
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "angular-material": "^1.1.1",
+    "edge-css": "*",
+    "moment": "^2.17.1"
   }
 }
