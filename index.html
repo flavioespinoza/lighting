@@ -51,104 +51,84 @@
         styles: map_style
       };
       var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-      var geoJson;
-      var myLayer;
+      var myLayer = new WebGLLayer(map);
 
-      $.getJSON('boston_streetlights.json', function (data) {
+      var lightFeaturesIndex = {};
+      var lightFeatures = [];
 
-        geoJson = data;
+      var lightGeoJSON = {
+        type: 'FeatureCollection',
+        features: lightFeatures
+      };
 
-        myLayer = new WebGLLayer(map);
-        myLayer.loadData(geoJson);
-        for (var c = 0; c < geoJson.features.length; c++) {
-          myLayer.changePointColor(c, [0, 0, 0]); //Change color to black
+      function startLayer() {
+        myLayer.loadData(lightGeoJSON);
+        for (var i = 0; i < lightGeoJSON.features.length; i += 1) {
+          var feature = lightGeoJSON.features[i];
+          if (feature.properties.illumination > 0) {
+            myLayer.changePointColor(i, [0.984, 0.949, 0.678]); //Change color to streetlight yellow
+          } else if (feature.properties.illumination == 0) {
+            myLayer.changePointColor(i, [0,0,0]); //Change color to black
+          }
         }
         myLayer.start();
+      }
 
-        var lightArray = [];
-
-        var lights = Swim.downlinkMap()
-          .host('ws://lighting.swim.services/')
-          .node('lights/boston')
-          .lane('lights')
-          .didLink(function () { console.log('didLink'); })
-          .didSync(function () { console.log('didSync'); })
-          .didUpdate(function (key, newValue) {
-
-            if (!newValue || !newValue.lng || !newValue.lat) {
-              return;
-            }
-
-            var _light_index = _.findIndex(geoJson.features, function (o) {
-              return o.properties.objectid === key;
-            });
-            var _array_index = _.findIndex(lightArray, function (o) {
-              if (!o) return;
-              return o.key === key;
-            });
-            if (newValue.illumination > 0) {
-              myLayer.changePointColor(_light_index, [0.984, 0.949, 0.678]); //Change color to streetlight yellow
-            } else if (newValue.illumination == 0) {
-              myLayer.changePointColor(_light_index, [0,0,1]); //Change color to black
-            }
-            if (_array_index > 0) {
-              lightArray.push({
-                key: key,
-                lat: newValue.lat,
-                lng: newValue.lng,
-                illumination: newValue.illumination
-              });
-            } else {
-              lightArray[_light_index] = {
-                key: key,
-                lat: newValue.lat,
-                lng: newValue.lng,
-                illumination: newValue.illumination
-              };
-            }
-
-            console.info(lightArray.length);
-
-          })
-          .open();
-
-        function debounce(func, wait, immediate) {
-          var timeout;
-          return function() {
-            var context = this, args = arguments;
-            var later = function() {
-              timeout = null;
-              if (!immediate) func.apply(context, args);
-            };
-            var callNow = immediate && !timeout;
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-            if (callNow) func.apply(context, args);
-          };
-        }
-
-        var slowYoRoll = debounce(function(key, newValue) {
-
+      var lightsSynced = false;
+      var lights = Swim.downlinkMap()
+        .host('ws://lighting.swim.services/')
+        //.host('ws://localhost:9001/')
+        .node('lights/boston')
+        .lane('lights')
+        .didLink(function () {
+          console.log('didLink');
+        })
+        .didSync(function () {
+          console.log('didSync');
+          lightsSynced = true;
+          startLayer();
+        })
+        .didUpdate(function (key, newValue) {
+          //console.log('light ' + key + ': ' + JSON.stringify(newValue));
           if (!newValue || !newValue.lng || !newValue.lat) {
             return;
           }
-
-          var _light_index = _.findIndex(geoJson.features, function (o) {
-            return o.properties.objectid === key;
-          });
-
-          if (newValue.illumination > 0) {
-            myLayer.changePointColor(_light_index, [0.984, 0.949, 0.678]); //Change color to streetlight yellow
-          } else if (newValue.illumination == 0) {
-            myLayer.changePointColor(_light_index, [0,0,1]); //Change color to black
+          var feature;
+          var index = lightFeaturesIndex[key];
+          if (index === undefined) {
+            index = lightFeatures.length;
+            feature = {
+              type: 'Feature',
+              id: key,
+              index: index,
+              geometry: {
+                type: 'Point',
+                coordinates: [newValue.lng, newValue.lat]
+              },
+              properties: {
+                id: key,
+                index: index,
+                illumination: newValue.illumination
+              }
+            };
+            lightFeatures.push(feature);
+            lightFeaturesIndex[key] = index;
+          } else {
+            if (!lightsSynced) {
+              console.log('fakeSync');
+              lightsSynced = true;
+              startLayer();
+            }
+            feature = lightFeatures[index];
+            feature.properties.illumination = newValue.illumination;
+            if (newValue.illumination > 0) {
+              myLayer.changePointColor(index, [0.984, 0.949, 0.678]); //Change color to streetlight yellow
+            } else if (newValue.illumination == 0) {
+              myLayer.changePointColor(index, [0,0,0]); //Change color to black
+            }
           }
-
-
-        }, 500);
-
-
-
-      });
+        })
+        .open();
 
     }
 
