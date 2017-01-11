@@ -24,13 +24,13 @@
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
       crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.js"></script>
+  <script src="bower_components/lodash/lodash.js"></script>
   <script src="bower_components/moment/moment.js"></script>
 
   <!-- Google maps api -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBI-Gz_lh3-rKXFwlpElD7pInA60U-iK0c&libraries=visualization"></script>
 
-  <script src="map.js"></script>
+  <script src="map-style.js"></script>
 
   <!-- Import WebGL Layer and Dependencies. -->
   <script src="CanvasLayer.js"></script>
@@ -41,13 +41,9 @@
   <script src="bower_components/swim/recon.js"></script>
   <script src="bower_components/swim/swim-client.js"></script>
 
-  <style type="text/css">
-
-  </style>
 </head>
+
 <body ng-app="SwimLightingApp" ng-controller="SwimLightingCtrl">
-
-
 
 <div id="map-canvas">
   <!-- Map rendered here -->
@@ -62,18 +58,17 @@
     <div class="lighting-text-secondary">Boston, MA</div>
     <div class="lighting-text-secondary">@ {{dateTime.time}}</div>
     <div class="lighting-text-secondary mt12">{{dateTime.date}}</div>
+
+    <div class="mt12">
+      <i class="fa fa-circle text-lighting-primary mr2" style="font-size: 8px;" aria-hidden="true"></i> <span class="text-lighting-primary">active</span>
+      <i class="fa fa-circle text-lighting-secondary ml12 mr2" style="font-size: 8px;" aria-hidden="true"></i> <span class="text-lighting-secondary">inactive</span>
+    </div>
   </div>
 </div>
 
+<!--<div id="swimStreamLighting">-->
 
-
-
-
-
-
-
-
-
+<!--</div>-->
 
 <!-- Angular Material requires Angular.js Libraries -->
 <script src="bower_components/angular/angular.min.js"></script>
@@ -86,31 +81,38 @@
 
 <script src="app.lighting.js"></script>
 
-
 <script type="text/ng-template" id="dialog1.tmpl.html">
 
   <md-dialog aria-label="Welcome">
     <form class="lighting-welcome-modal" ng-cloak>
 
-      <div class="lighting-header-image"></div>
+      <div class="overlay"></div>
 
+      <div class="lighting-header-image"></div>
 
       <md-dialog-content>
         <div class="md-dialog-content">
 
-          <div class="lighting-welcome-header mb12">
+          <div class="lighting-welcome-header">
             Welcome to Boston
           </div>
-          <div class="lighting-welcome-subheader">
-            a dynamic lighting control experience for the city of Boston.
-          </div>
+          <!--<div class="lighting-welcome-subheader">-->
+            <!--a dynamic lighting control experience for the city of Boston.-->
+          <!--</div>-->
 
         </div>
       </md-dialog-content>
 
-      <md-dialog-actions layout="row">
+      <md-dialog-actions layout="column">
 
-        <div class="mb12" ng-class="modalBtn" ng-click="closeModal()"></div>
+
+        <div class="lighting-welcome-header mb12">
+          <i class="fa fa-cog fa-spin fa-3x fa-fw mb8" style="margin: 0 auto;text-align: center;/* width: 100%; */" aria-hidden="true"></i>
+        </div>
+
+        <div class="lighting-welcome-subheader mb24">
+          loading 75,000 individual lighting apps
+        </div>
 
       </md-dialog-actions>
     </form>

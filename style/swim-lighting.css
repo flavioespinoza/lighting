@@ -20,11 +20,21 @@ md-backdrop {
 .lighting-welcome-modal {
   position: relative;
   width: 348px; }
-  .lighting-welcome-modal .lighting-header-image {
-    width: 348px;
-    height: 152px;
-    background-image: url(../images/boston-skyline.png);
-    background-repeat: no-repeat; }
+
+.lighting-header-image {
+  width: 348px;
+  height: 152px;
+  background-image: url(../images/boston-skyline.png);
+  background-repeat: no-repeat; }
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 348px;
+  height: 152px;
+  background-color: #67889D;
+  opacity: 0.35; }
 
 .lighting-welcome-header {
   font-family: HelveticaNeue-Bold;
@@ -35,7 +45,7 @@ md-backdrop {
 .lighting-welcome-subheader {
   font-family: HelveticaNeue;
   text-align: center;
-  font-size: 19.25px;
+  font-size: 18px;
   color: #9B9B9B; }
 
 .lighting-welcome-text-primary {
@@ -68,6 +78,12 @@ md-backdrop {
 .bg-lighting-yellow-secondary {
   background-color: #FBE669; }
 
+.text-lighting-primary {
+  color: #E5DC97; }
+
+.text-lighting-secondary {
+  color: #67889D; }
+
 .map-header {
   position: absolute;
   top: 0;
@@ -75,34 +91,66 @@ md-backdrop {
 
 .lighting-header {
   opacity: 0.75;
-  font-family: Lato-Regular;
+  font-family: HelveticaNeue;
   font-size: 64px;
   color: #FCF2A6;
   float: left; }
 
 .lighting-subheader {
   opacity: 0.75;
-  font-family: Lato-Light;
+  font-family: HelveticaNeue-Light;
   font-size: 32px;
   color: #FCF2A6;
   float: left; }
 
 .lighting-text-primary {
-  font-family: Lato-Light;
+  font-family: HelveticaNeue-Light;
   font-size: 24px;
   color: #E5DC97;
   letter-spacing: 0; }
 
 .lighting-text-secondary {
-  font-family: Lato-Light;
+  font-family: HelveticaNeue-Light;
   font-size: 24px;
   color: #9B9B9B;
   letter-spacing: 0; }
 
-.lighting-stream {
-  font-family: Lato-Light;
+#swimStreamLighting {
+  width: 320px;
+  height: 420px;
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  border: 1px solid #FBE669; }
+
+.swim-stream {
+  font-family: HelveticaNeue-Light;
   font-size: 15px;
-  color: #4A4A4A; }
+  color: #9B9B9B; }
+
+.swimStreamLighting #vertical-container {
+  height: 292px;
+  width: 100%;
+  max-width: 400px; }
+
+.swimStreamLighting .repeated-item {
+  border-bottom: 1px solid #303030;
+  box-sizing: border-box;
+  height: 40px;
+  padding-top: 10px; }
+
+.swimStreamLighting md-content {
+  margin: 16px; }
+
+.swimStreamLighting md-virtual-repeat-container {
+  border: solid 1px grey; }
+
+.swimStreamLighting .md-virtual-repeat-container .md-virtual-repeat-offsetter div {
+  padding-left: 16px; }
+
+.repeated-item.ng-binding.ng-scope.flex {
+  border-bottom: 1px solid #888d8e;
+  padding: 12px; }
 
 .foo {
   color: red; }
